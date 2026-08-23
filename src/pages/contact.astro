@@ -1,0 +1,36 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Contact Us | instabid.live" description="Get in touch with the instabid.live support team.">
+  <div class="clay-box p-4 sm:p-8 md:p-12 my-4 sm:my-8 max-w-xl mx-auto space-y-4 sm:space-y-6">
+    <div class="text-center space-y-1.5 sm:space-y-2">
+      <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-pink-500/10 text-pink-600">
+        ✉️ GET IN TOUCH
+      </span>
+      <h1 class="text-2xl sm:text-3xl font-black text-slate-900">Contact Support</h1>
+      <p class="text-[11px] sm:text-xs text-slate-500">Have questions about bidding, verification, or partnerships?</p>
+    </div>
+
+    <form class="space-y-3 sm:space-y-4" onsubmit="event.preventDefault(); alert('Message received! We will reply via email within 24 hours.');">
+      <div>
+        <label class="block text-[10px] sm:text-xs font-extrabold uppercase text-slate-700 mb-1">Your Name</label>
+        <input type="text" required placeholder="Alex Rivers" class="clay-inset w-full px-3.5 py-2.5 sm:py-3 text-base sm:text-sm font-bold text-slate-800 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-[10px] sm:text-xs font-extrabold uppercase text-slate-700 mb-1">Email Address</label>
+        <input type="email" required placeholder="alex@example.com" class="clay-inset w-full px-3.5 py-2.5 sm:py-3 text-base sm:text-sm font-bold text-slate-800 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-[10px] sm:text-xs font-extrabold uppercase text-slate-700 mb-1">Message</label>
+        <textarea rows="4" required placeholder="How can we help?" class="clay-inset w-full px-3.5 py-2.5 sm:py-3 text-base sm:text-sm font-bold text-slate-800 focus:outline-none"></textarea>
+      </div>
+
+      <button type="submit" class="clay-btn-primary w-full py-3 sm:py-3.5 text-xs sm:text-sm font-bold shadow-lg">
+        Send Message →
+      </button>
+    </form>
+  </div>
+</Layout>

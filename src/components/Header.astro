@@ -1,0 +1,69 @@
+---
+import { CATEGORIES } from '@/lib/mockData';
+
+interface Props {
+  activeCategory?: string;
+}
+
+const { activeCategory = 'all' } = Astro.props;
+---
+
+<header class="sticky top-0 z-40 backdrop-blur-md bg-slate-100/80 border-b border-white/60 px-3 sm:px-6 lg:px-8 py-2.5 transition-all">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 md:gap-4">
+    <!-- Top Row on Mobile: Logo & Claim CTA -->
+    <div class="flex items-center justify-between gap-2">
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center gap-2.5 group shrink-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center clay-box clay-box-hover text-white text-base sm:text-lg font-bold bg-gradient-to-tr from-pink-500 via-rose-500 to-amber-400 shadow-md shrink-0">
+          📸
+        </div>
+        <div class="leading-tight">
+          <div class="flex items-center gap-1.5">
+            <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-800">insta<span class="ig-gradient-text">bid</span></span>
+            <span class="px-1.5 py-0.2 text-[10px] sm:text-xs font-extrabold uppercase rounded-full bg-pink-500/10 text-pink-600 border border-pink-500/20">LIVE</span>
+          </div>
+          <p class="text-[10px] sm:text-xs font-medium text-slate-500 hidden xs:block">Pay-to-Rank Leaderboard</p>
+        </div>
+      </a>
+
+      <!-- Header Action Button (Visible on mobile right & desktop) -->
+      <button
+        id="open-bid-modal-btn"
+        class="clay-btn-primary px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-md hover:scale-105 active:scale-95 transition-transform shrink-0"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Claim #1 Spot</span>
+      </button>
+    </div>
+
+    <!-- Category Pills Navigation (Horizontal Touch Scroll) -->
+    <nav class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto max-w-full pb-1 md:pb-0 scrollbar-none py-0.5 px-0.5 -mx-1 sm:mx-0 mask-fade">
+      <a
+        href="/"
+        class={`px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold rounded-full transition-all whitespace-nowrap shrink-0 ${
+          activeCategory === 'all'
+            ? 'clay-btn-primary shadow-sm scale-105'
+            : 'clay-btn text-slate-700 hover:text-pink-600'
+        }`}
+      >
+        🔥 All
+      </a>
+      {
+        CATEGORIES.map((cat) => (
+          <a
+            href={`/category/${cat.slug}`}
+            class={`px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-bold rounded-full transition-all whitespace-nowrap shrink-0 ${
+              activeCategory === cat.slug
+                ? 'clay-btn-primary shadow-sm scale-105'
+                : 'clay-btn text-slate-700 hover:text-pink-600'
+            }`}
+          >
+            {cat.icon} {cat.name}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>

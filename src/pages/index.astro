@@ -1,0 +1,83 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import SeasonBanner from '@/components/SeasonBanner.astro';
+import LeaderboardCard from '@/components/LeaderboardCard.astro';
+import BidModal from '@/components/BidModal.astro';
+import FAQSection from '@/components/FAQSection.astro';
+import SEOContent from '@/components/SEOContent.astro';
+import { INITIAL_BIDS } from '@/lib/mockData';
+
+// Sort initial bids by amount descending
+const sortedBids = [...INITIAL_BIDS].sort((a, b) => b.amountCents - a.amountCents);
+const rankedBids = sortedBids.map((bid, idx) => ({ ...bid, rank: idx + 1 }));
+
+const urlParams = Astro.url.searchParams;
+const bidSuccess = urlParams.get('bid_success') === 'true';
+const successHandle = urlParams.get('handle') || '';
+const successAmount = urlParams.get('amount') || '';
+---
+
+<Layout
+  title="instabid.live — Bid for the Top Spot on Instagram"
+  description="instabid.live is the verified pay to rank Instagram leaderboard. Bid for top spot visibility in your category with live follower cards and zero ads."
+  activeCategory="all"
+  canonicalPath="/"
+>
+  <!-- Payment Toast Notification -->
+  {
+    bidSuccess && (
+      <div class="clay-box p-3.5 sm:p-4 mb-4 sm:mb-6 bg-emerald-500/10 border-emerald-500/40 text-emerald-900 rounded-2xl flex items-center justify-between gap-3 sm:gap-4 animate-bounce">
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <span class="text-xl sm:text-2xl shrink-0">🎉</span>
+          <div>
+            <h4 class="font-extrabold text-xs sm:text-sm">Bid Placement Confirmed!</h4>
+            <p class="text-[11px] sm:text-xs">
+              @{successHandle} placed a ${successAmount} bid. Your profile card is now active!
+            </p>
+          </div>
+        </div>
+        <a href="/" class="text-[11px] sm:text-xs font-black text-emerald-700 hover:underline shrink-0">Dismiss</a>
+      </div>
+    )
+  }
+
+  <!-- Active Season Banner -->
+  <SeasonBanner seasonNumber={24} totalBidsCount={rankedBids.length} />
+
+  <!-- Leaderboard Header & Quick Stats -->
+  <div class="my-5 sm:my-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4">
+    <div>
+      <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2 sm:gap-3">
+        <span>Verified Instagram Pay-to-Rank Leaderboard</span>
+      </h1>
+      <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 sm:mt-1">
+        Showing top verified Instagram profiles ranked by active bid value across all categories.
+      </p>
+    </div>
+
+    <!-- Stats Pill -->
+    <div class="clay-inset px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-2.5 sm:gap-4 text-[11px] sm:text-xs font-bold text-slate-600 shrink-0">
+      <div>Total: <span class="text-slate-900 font-extrabold">{rankedBids.length}</span></div>
+      <span>•</span>
+      <div>Top Spot: <span class="text-pink-600 font-extrabold">$980.00</span></div>
+    </div>
+  </div>
+
+  <!-- Live Profile Cards Grid / Stack -->
+  <section class="space-y-4" aria-label="Verified Instagram Leaderboard Listings">
+    {
+      rankedBids.map((bid) => (
+        <LeaderboardCard bid={bid} />
+      ))
+    }
+  </section>
+
+  <!-- Interactive 3-Step Bid Modal -->
+  <BidModal />
+
+  <!-- Real FAQ Section with 10 Q&A Pairs & FAQPage Schema -->
+  <FAQSection />
+
+  <!-- 800-1200 Word Genuine SEO Article -->
+  <SEOContent />
+</Layout>

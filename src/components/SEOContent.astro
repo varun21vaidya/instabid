@@ -1,0 +1,128 @@
+---
+import { CATEGORIES } from '@/lib/mockData';
+---
+
+<article class="clay-box p-4 sm:p-8 md:p-12 my-8 sm:my-16 max-w-5xl mx-auto space-y-6 sm:space-y-10">
+  <header class="border-b border-slate-200/80 pb-4 sm:pb-6 text-center md:text-left space-y-1.5 sm:space-y-2">
+    <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-pink-500/10 text-pink-600 border border-pink-500/20 uppercase tracking-wider">
+      📘 Official Platform Guide
+    </span>
+    <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+      The Verified Pay to Rank Instagram Attention Marketplace
+    </h2>
+    <p class="text-xs sm:text-sm font-semibold text-slate-600 max-w-2xl">
+      How creators, niche brands, and digital entrepreneurs leverage real-time bidding to secure top visibility on instabid.live.
+    </p>
+  </header>
+
+  <!-- Section 1: Opening (100-150 words) -->
+  <section class="space-y-4 text-xs md:text-sm text-slate-700 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-800">
+      1. What is instabid.live?
+    </h3>
+    <p>
+      <strong>instabid.live</strong> is an Instagram bidding site and pay to rank Instagram leaderboard designed for creators, niche influencers, and brands seeking predictable profile growth. In an ecosystem where organic algorithm updates restrict reach, instabid.live provides a transparent paid attention marketplace where users bid for top spot Instagram placement. Every active listing displays a live profile card featuring authentic follower counts, bio snippets, and direct links to your official Instagram profile.
+    </p>
+    <p>
+      Whether you are launching a luxury fashion label, promoting an online coaching program, or building a viral meme network, instabid.live allows you to bid to be seen on Instagram by thousands of high-intent visitors daily.
+    </p>
+  </section>
+
+  <!-- Section 2: Why instabid.live is different (200-250 words) -->
+  <section class="space-y-4 text-xs md:text-sm text-slate-700 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-800">
+      2. Why instabid.live is the Premier Outbid.lol Alternative
+    </h3>
+    <p>
+      Legacy pay to rank platforms like outbid.lol introduced the basic concept of link bidding, but left critical vulnerabilities unaddressed. Generic unverified boards allow anyone to list arbitrary third-party URLs without authorization, mix all industries into one chaotic global feed, and offer zero profile metrics or outbid alerts. <strong>instabid.live</strong> was engineered specifically to fix these flaws as a superior outbid.lol alternative:
+    </p>
+    <ul class="list-disc pl-5 space-y-2 font-medium">
+      <li>
+        <strong>Bio Challenge Account Verification:</strong> We mandate proof of Instagram account ownership before any bid goes live, guaranteeing that every listing represents a verified creator.
+      </li>
+      <li>
+        <strong>Instagram Creator Leaderboard by Category:</strong> Instead of competing in a crowded global feed, bids are organized into 6 focused niche categories for targeted reach.
+      </li>
+      <li>
+        <strong>Live Profile Cards:</strong> Every listing displays a rich profile card with live avatar rendering, verified badges, follower counts, and bio snippets.
+      </li>
+      <li>
+        <strong>Real-Time Outbid Notifications:</strong> Bidders receive instant email notifications the moment another user places a higher bid, allowing immediate top-ups.
+      </li>
+      <li>
+        <strong>No Ads Instagram Promotion:</strong> We maintain a strict no ads policy—zero popups, banner ads, or tracking network scripts—ensuring 100% visitor focus on our bidders.
+      </li>
+    </ul>
+  </section>
+
+  <!-- Section 3: How it works (200-250 words) -->
+  <section class="space-y-4 text-xs md:text-sm text-slate-700 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-800">
+      3. How Bidding & Ownership Verification Works
+    </h3>
+    <p>
+      Participating on the verified Instagram leaderboard requires three simple steps:
+    </p>
+    <ol class="list-decimal pl-5 space-y-2 font-medium">
+      <li>
+        <strong>Enter Your Instagram Handle & Select Category:</strong> Choose the niche leaderboard best suited to your target audience (e.g. Fashion, Fitness, Business).
+      </li>
+      <li>
+        <strong>Complete Bio Challenge Verification:</strong> Our system generates a unique 6-character code (such as <code>instabid-a8f9c2</code>). Temporarily paste this code into your public Instagram bio. Our edge worker verifies ownership in ~5 seconds, after which you can immediately clean your bio.
+      </li>
+      <li>
+        <strong>Set Your Bid Amount & Checkout:</strong> Initial bids start at a minimum of $5.00 USD. To raise an existing bid or outbid a competitor for a higher rank, your bid must exceed the target rank by at least $1.00 USD. You only pay the monetary difference required to claim your desired spot.
+      </li>
+    </ol>
+  </section>
+
+  <!-- Section 4: Categories / Who's on the board (150-200 words) -->
+  <section class="space-y-4 text-xs md:text-sm text-slate-700 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-800">
+      4. Explore Instagram Creator Leaderboards by Category
+    </h3>
+    <p>
+      By separating competition into distinct niche pools, instabid.live ensures your profile is displayed directly to visitors searching for talent in your exact domain:
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2">
+      {CATEGORIES.map((cat) => (
+        <a
+          href={`/category/${cat.slug}`}
+          class="clay-inset p-4 flex items-center gap-3 hover:scale-105 transition-transform group"
+        >
+          <span class="text-2xl">{cat.icon}</span>
+          <div>
+            <div class="font-bold text-xs text-slate-800 group-hover:text-pink-600">{cat.name}</div>
+            <div class="text-[10px] text-slate-500 line-clamp-1">{cat.description}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Section 5: Trust & Safety (100-150 words) -->
+  <section class="space-y-4 text-xs md:text-sm text-slate-700 leading-relaxed">
+    <h3 class="text-xl font-bold text-slate-800">
+      5. Secure Instagram Bidding Platform & Refund Policy
+    </h3>
+    <p>
+      As a secure Instagram bidding platform, instabid.live processes all monetary transactions through Stripe, a PCI-DSS Level 1 certified payment gateway. We never store or handle raw credit card information, and every checkout request utilizes cryptographic idempotency keys to eliminate double-charging risks.
+    </p>
+    <p>
+      All bids represent non-refundable purchases of digital placement advertising space for the active 7-day weekly season. Should your profile be outbid, your card remains active on the leaderboard at whatever lower position your bid amount qualifies for until the season resets every Sunday at 23:59 UTC. For full guidelines, review our <a href="/terms" class="text-pink-600 font-bold hover:underline">Terms & Conditions</a> and <a href="/privacy" class="text-pink-600 font-bold hover:underline">Privacy Policy</a>.
+    </p>
+  </section>
+
+  <!-- Section 6: Getting started / CTA (100 words) -->
+  <section class="space-y-4 text-xs md:text-sm text-slate-700 leading-relaxed bg-pink-500/5 p-6 rounded-2xl border border-pink-500/20 text-center">
+    <h3 class="text-xl font-bold text-slate-800">
+      6. Get Featured on Instagram Today
+    </h3>
+    <p class="max-w-xl mx-auto text-slate-600">
+      Ready to outbid competitors and secure rank #1 in your niche? Verify your Instagram handle and place your bid to claim top visibility on instabid.live now.
+    </p>
+    <button id="open-bid-modal-btn" class="clay-btn-primary px-8 py-3.5 text-sm font-black shadow-lg hover:scale-105 transition-transform mt-2">
+      Claim #1 Spot Now 🚀
+    </button>
+  </section>
+</article>

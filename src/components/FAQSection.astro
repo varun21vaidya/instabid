@@ -1,0 +1,140 @@
+---
+export const FAQ_DATA = [
+  {
+    q: 'How does instabid.live work?',
+    a: 'instabid.live is a pay to rank Instagram leaderboard where creators and brands bid for top spot visibility in niche categories. The highest active bid in a category claims position #1 during the 7-day weekly season, displaying live follower counts and driving direct traffic to your Instagram profile.',
+  },
+  {
+    q: 'Is instabid.live an outbid.lol alternative?',
+    a: 'Yes. instabid.live is the premier outbid.lol alternative designed specifically for Instagram. Unlike generic unverified link boards, instabid.live mandates Bio Challenge account ownership verification, organizes competition into category leaderboards, displays live profile cards, and provides instant outbid notifications with a 100% ad-free experience.',
+  },
+  {
+    q: 'How is Instagram ownership verified on instabid.live?',
+    a: 'During the 3-step bidding process, our verification engine generates a unique 6-character code (e.g., instabid-x9a2b4). You temporarily paste this code into your Instagram profile bio. Our edge worker validates the code in ~5 seconds to confirm you own the profile before your bid goes live. Once verified, you can immediately clean your bio.',
+    link: '/terms#verification',
+  },
+  {
+    q: 'What are the minimum bid and increment rules?',
+    a: 'The minimum initial bid to list your profile on any category leaderboard is $5.00 USD. To raise your existing bid or outbid a competitor for a higher rank, you must pay at least $1.00 USD more than the current target rank bid. You only pay the incremental price difference to upgrade your spot.',
+  },
+  {
+    q: 'Can I get my money back on instabid.live (Refund Policy)?',
+    a: 'All completed bids represent non-refundable purchases of digital leaderboard placement advertising for the active weekly season. Once processed via Stripe, your profile instantly receives public impression exposure. If another creator outbids your spot, your listing remains active at whatever lower rank your bid amount qualifies for until the season resets. Read our full <a href="/terms" class="text-pink-600 font-bold hover:underline">Terms & Conditions</a>.',
+    link: '/terms#refunds',
+  },
+  {
+    q: 'Is instabid.live safe to pay on?',
+    a: 'Yes. Payments are handled via Stripe, a PCI-DSS Level 1 compliant payment processor. instabid.live never touches or stores your raw card details. All payment requests feature server-side idempotency keys to prevent double-charging.',
+  },
+  {
+    q: 'Why is there no ads on instabid.live?',
+    a: 'We maintain a strict no ads Instagram promotion guarantee (no banner ads, popups, or tracking ad scripts) so that 100% of visitor attention remains focused on our verified bidders. Our sole monetization model is pay to rank advertising placement.',
+  },
+  {
+    q: 'What categories are available on the verified Instagram leaderboard?',
+    a: 'Creators compete across 6 niche categories: <a href="/category/fashion" class="text-pink-600 font-bold hover:underline">Fashion & Style</a>, <a href="/category/fitness" class="text-pink-600 font-bold hover:underline">Fitness & Wellness</a>, <a href="/category/memes" class="text-pink-600 font-bold hover:underline">Memes & Culture</a>, <a href="/category/business" class="text-pink-600 font-bold hover:underline">Business & Tech</a>, <a href="/category/music" class="text-pink-600 font-bold hover:underline">Music & Art</a>, and <a href="/category/crypto" class="text-pink-600 font-bold hover:underline">Web3 & Crypto</a>. Category leaderboards ensure your bid competes against relevant peers rather than a chaotic global feed.',
+  },
+  {
+    q: 'What happens when I get outbid by another creator?',
+    a: 'If a competitor outbids your current position, our platform sends an instant outbid email notification to your registered address. The email contains a direct link allowing you to top-up your bid by paying the difference to re-claim the #1 spot.',
+  },
+  {
+    q: 'How do Weekly Seasons and the Hall of Fame work?',
+    a: 'Leaderboards operate on 7-day weekly seasons resetting every Sunday at 23:59 UTC. When a season ends, the top 3 rank champions in each category are permanently enshrined in our public <a href="/archive" class="text-pink-600 font-bold hover:underline">Hall of Fame</a> archive, while a new season opens for fresh bids.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': FAQ_DATA.map((item) => ({
+    '@type': 'Question',
+    'name': item.q,
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': `<p>${item.a.replace(/<[^>]*>/g, '')}</p>`,
+    },
+  })),
+};
+---
+
+<!-- FAQPage JSON-LD Schema -->
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+<section class="my-8 sm:my-16 space-y-4 sm:space-y-8" id="faq">
+  <div class="text-center max-w-2xl mx-auto space-y-1.5 sm:space-y-2">
+    <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-pink-500/10 text-pink-600 border border-pink-500/20">
+      💡 FREQUENTLY ASKED QUESTIONS
+    </span>
+    <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-800 tracking-tight">
+      Frequently Asked Questions
+    </h2>
+    <p class="text-[11px] sm:text-xs text-slate-600">
+      Transparent mechanics, verified profile ownership, secure payment processing, and ad-free visibility.
+    </p>
+  </div>
+
+  <div class="space-y-3 sm:space-y-4 max-w-4xl mx-auto">
+    {
+      FAQ_DATA.map((faq, idx) => (
+        <div class="clay-box p-3.5 sm:p-5 md:p-6 transition-all duration-200" id={`faq-container-${idx}`}>
+          <button
+            type="button"
+            class="faq-toggle w-full text-left font-extrabold text-xs sm:text-sm md:text-base text-slate-800 flex items-center justify-between gap-3 sm:gap-4 focus:outline-none cursor-pointer"
+            aria-expanded="false"
+            aria-controls={`faq-answer-${idx}`}
+            data-index={idx}
+          >
+            <span>{faq.q}</span>
+            <span class="faq-icon w-6 h-6 sm:w-8 sm:h-8 rounded-full clay-inset flex items-center justify-center text-pink-600 font-black text-xs sm:text-sm shrink-0 transition-transform duration-300">
+              ↓
+            </span>
+          </button>
+          <div
+            id={`faq-answer-${idx}`}
+            class="faq-answer hidden text-[11px] sm:text-xs md:text-sm text-slate-600 mt-2.5 sm:mt-4 leading-relaxed border-t border-slate-200/60 pt-2.5 sm:pt-4"
+          >
+            <Fragment set:html={faq.a} />
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggles = document.querySelectorAll('.faq-toggle');
+    toggles.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = btn.getAttribute('data-index');
+        const answer = document.getElementById(`faq-answer-${idx}`);
+        const icon = btn.querySelector('.faq-icon');
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+        // Close all others
+        toggles.forEach((otherBtn) => {
+          if (otherBtn !== btn) {
+            otherBtn.setAttribute('aria-expanded', 'false');
+            const otherIdx = otherBtn.getAttribute('data-index');
+            const otherAns = document.getElementById(`faq-answer-${otherIdx}`);
+            const otherIcon = otherBtn.querySelector('.faq-icon');
+            if (otherAns) otherAns.classList.add('hidden');
+            if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+          }
+        });
+
+        // Toggle current
+        if (isExpanded) {
+          btn.setAttribute('aria-expanded', 'false');
+          answer.classList.add('hidden');
+          icon.style.transform = 'rotate(0deg)';
+        } else {
+          btn.setAttribute('aria-expanded', 'true');
+          answer.classList.remove('hidden');
+          icon.style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+  });
+</script>

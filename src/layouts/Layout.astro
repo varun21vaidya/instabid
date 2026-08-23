@@ -1,0 +1,82 @@
+---
+import '@/styles/global.css';
+import GoogleAnalytics from '@/components/GoogleAnalytics.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  activeCategory?: string;
+  canonicalPath?: string;
+}
+
+const {
+  title = 'instabid.live — Bid for the Top Spot on Instagram',
+  description = 'instabid.live is the verified pay to rank Instagram leaderboard. Bid for top spot visibility in your category with live follower cards and zero ads.',
+  activeCategory = 'all',
+  canonicalPath = '',
+} = Astro.props;
+
+const siteUrl = 'https://instabid.live';
+const canonicalURL = new URL(canonicalPath || Astro.url.pathname, siteUrl).toString().replace(/\/$/, '') + '/';
+const ogImageUrl = `${siteUrl}/og-image.jpg`;
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  'name': 'instabid.live',
+  'url': siteUrl,
+  'logo': `${siteUrl}/favicon.svg`,
+  'description': 'Verified pay to rank Instagram leaderboard and paid attention marketplace.',
+  'sameAs': [],
+};
+---
+
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- OpenGraph Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="instabid.live" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Favicon Suite -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#eef2f7" />
+
+    <!-- Organization JSON-LD Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+    <GoogleAnalytics />
+  </head>
+  <body class="min-h-full flex flex-col antialiased selection:bg-pink-500 selection:text-white max-w-full overflow-x-hidden">
+    <Header activeCategory={activeCategory} />
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
