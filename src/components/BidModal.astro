@@ -1,5 +1,8 @@
 ---
 import { CATEGORIES } from '@/lib/mockData';
+import BidCheckout from '@/components/BidCheckout.astro';
+
+const paypalClientId = import.meta.env.PUBLIC_PAYPAL_CLIENT_ID || '';
 ---
 
 <!-- Claymorphic Bid Modal Overlay -->
@@ -136,6 +139,15 @@ import { CATEGORIES } from '@/lib/mockData';
         💳 Payments processed via PCI-compliant Stripe. By bidding, you agree to our <a href="/terms" class="text-pink-600 underline">Terms of Service</a>.
       </div>
 
+      <div class="grid grid-cols-2 gap-2" role="group" aria-label="Payment method">
+        <button type="button" id="stripe-payment-method" class="clay-btn-primary py-2 text-xs font-bold" aria-pressed="true">Card via Stripe</button>
+        <button type="button" id="paypal-payment-method" class="clay-btn py-2 text-xs font-bold text-slate-700" aria-pressed="false">PayPal</button>
+      </div>
+
+      <div id="paypal-payment-panel" class="hidden rounded-xl border border-amber-200 bg-amber-50/60 p-3">
+        <BidCheckout clientId={paypalClientId} />
+      </div>
+
       <div class="flex gap-2 sm:gap-3">
         <button type="button" id="back-to-step-2-btn" class="clay-btn w-1/3 py-2.5 sm:py-3 text-[11px] sm:text-xs font-bold text-slate-700">
           ← Back
@@ -166,9 +178,31 @@ import { CATEGORIES } from '@/lib/mockData';
     const handleInput = document.getElementById('ig-handle-input');
     const challengeDisplay = document.getElementById('challenge-code-display');
     const verifyStatus = document.getElementById('verify-status-msg');
+    const stripePaymentMethod = document.getElementById('stripe-payment-method');
+    const paypalPaymentMethod = document.getElementById('paypal-payment-method');
+    const paypalPaymentPanel = document.getElementById('paypal-payment-panel');
 
     let currentHandle = '';
     let currentCode = '';
+    let paymentMethod = 'stripe';
+
+    const selectPaymentMethod = (method) => {
+      paymentMethod = method;
+      const paypalSelected = method === 'paypal';
+      paypalPaymentPanel.classList.toggle('hidden', !paypalSelected);
+      document.getElementById('submit-checkout-btn').classList.toggle('hidden', paypalSelected);
+      stripePaymentMethod.className = paypalSelected
+        ? 'clay-btn py-2 text-xs font-bold text-slate-700'
+        : 'clay-btn-primary py-2 text-xs font-bold';
+      paypalPaymentMethod.className = paypalSelected
+        ? 'clay-btn-primary py-2 text-xs font-bold'
+        : 'clay-btn py-2 text-xs font-bold text-slate-700';
+      stripePaymentMethod.setAttribute('aria-pressed', String(!paypalSelected));
+      paypalPaymentMethod.setAttribute('aria-pressed', String(paypalSelected));
+    };
+
+    stripePaymentMethod.addEventListener('click', () => selectPaymentMethod('stripe'));
+    paypalPaymentMethod.addEventListener('click', () => selectPaymentMethod('paypal'));
 
     openBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -262,6 +296,7 @@ import { CATEGORIES } from '@/lib/mockData';
 
     document.getElementById('bid-step-3').addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (paymentMethod !== 'stripe') return;
       const amountUSD = document.getElementById('bid-amount-input').value;
       const categoryId = document.getElementById('category-select').value;
       const description = document.getElementById('bid-desc-input').value;

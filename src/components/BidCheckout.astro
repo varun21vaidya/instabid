@@ -1,0 +1,75 @@
+---
+interface Props {
+  clientId: string;
+}
+
+const { clientId } = Astro.props;
+---
+
+<div id="paypal-checkout" data-client-id={clientId}>
+  <div id="paypal-button-container"></div>
+  <p id="paypal-status" class="text-xs text-center text-slate-500 mt-2" role="status"></p>
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.getElementById('paypal-checkout');
+    const buttonContainer = document.getElementById('paypal-button-container');
+    const status = document.getElementById('paypal-status');
+    if (!root || !buttonContainer || !status) return;
+
+    const clientId = root.dataset.clientId;
+    if (!clientId) {
+      status.textContent = 'PayPal is not configured yet.';
+      return;
+    }
+
+    const sdk = document.createElement('script');
+    sdk.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=USD&intent=capture`;
+    sdk.onload = () => {
+      const paypal = window.paypal;
+      if (!paypal) {
+        status.textContent = 'PayPal could not load. Try again.';
+        return;
+      }
+
+      paypal.Buttons({
+        style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'pay' },
+        createOrder: async () => {
+          const handle = document.getElementById('ig-handle-input')?.value.trim() || '';
+          const amountUsd = Number(document.getElementById('bid-amount-input')?.value);
+          const categoryId = document.getElementById('category-select')?.value || 'all';
+          const description = document.getElementById('bid-desc-input')?.value || '';
+          status.textContent = 'Creating PayPal order...';
+          const response = await fetch('/api/paypal/create-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ profileId: handle, amountUsd, categoryId, description }),
+          });
+          const data = await response.json();
+          if (!response.ok || !data.id) throw new Error(data.error || 'Could not create PayPal order.');
+          return data.id;
+        },
+        onApprove: async (data) => {
+          status.textContent = 'Confirming payment...';
+          const handle = document.getElementById('ig-handle-input')?.value.trim() || '';
+          const response = await fetch('/api/paypal/capture-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: data.orderID, profileId: handle }),
+          });
+          const result = await response.json();
+          if (!response.ok || result.status !== 'COMPLETED') throw new Error(result.error || 'Payment could not be confirmed.');
+          status.textContent = `You're now the top bid for @${result.profileId}!`;
+        },
+        onCancel: () => { status.textContent = 'Checkout cancelled.'; },
+        onError: (error) => {
+          console.error(error);
+          status.textContent = 'Something went wrong. Please try again.';
+        },
+      }).render(buttonContainer);
+    };
+    sdk.onerror = () => { status.textContent = 'PayPal could not load. Try again.'; };
+    document.head.appendChild(sdk);
+  })();
+</script>

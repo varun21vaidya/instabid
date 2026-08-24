@@ -1,0 +1,1 @@
+ALTER TABLE `bids` ADD `paypal_order_id` text;

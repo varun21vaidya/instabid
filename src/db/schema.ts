@@ -44,6 +44,7 @@ export const bids = sqliteTable('bids', {
   amountCents: integer('amount_cents').notNull(),
   description: text('description').notNull().default(''),
   stripePaymentId: text('stripe_payment_id'),
+  paypalOrderId: text('paypal_order_id'),
   status: text('status', { enum: ['pending', 'active', 'outbid'] }).notNull().default('pending'),
   createdAt: integer('created_at').notNull(),
 });

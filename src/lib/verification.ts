@@ -30,26 +30,41 @@ export interface VerificationResult {
 
 export async function checkBioChallenge(handle: string, challengeCode: string): Promise<VerificationResult> {
   const cleanHandle = handle.replace('@', '').trim().toLowerCase();
-  
+
   if (!cleanHandle) {
     return { success: false, message: 'Invalid Instagram handle.', handle: cleanHandle };
   }
 
-  // Simulated verification check for dev / demonstration
-  // In production, fetch `https://www.instagram.com/${cleanHandle}/` via Cloudflare Worker proxy or Graph API fallback
-  try {
-    // For demo purposes, any handle containing "test" or submitted with valid code passes,
-    // or simulate real bio check latency:
-    await new Promise((resolve) => setTimeout(resolve, 800));
+  if (!challengeCode || typeof challengeCode !== 'string') {
+    return { success: false, message: 'Verification code is required.', handle: cleanHandle };
+  }
 
-    // Demo fallback metadata for new bids
+  try {
+    const instagramUrl = `https://www.instagram.com/${encodeURIComponent(cleanHandle)}/`;
+    const response = await fetch(instagramUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+    if (!response.ok) {
+      throw new Error(`Instagram lookup failed with ${response.status}`);
+    }
+
+    const html = await response.text();
+    const normalizedChallenge = challengeCode.toLowerCase();
+    const hasToken = html.toLowerCase().includes(normalizedChallenge);
+
+    if (!hasToken) {
+      return {
+        success: false,
+        message: `We could not find "${challengeCode}" in the public bio for @${cleanHandle}. Ensure the code is placed in your bio and the profile is public.`,
+        handle: cleanHandle,
+      };
+    }
+
     return {
       success: true,
       message: `Verification successful! Bio token "${challengeCode}" matched on @${cleanHandle}.`,
       handle: cleanHandle,
       avatarUrl: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80`,
-      followerCount: Math.floor(Math.random() * 50000) + 1200,
-      bioSnippet: `Official Instagram account for @${cleanHandle} | Verified via instabid.live`,
+      followerCount: 0,
+      bioSnippet: `Public Instagram account for @${cleanHandle} verified via instabid.live`,
     };
   } catch (err: any) {
     return {

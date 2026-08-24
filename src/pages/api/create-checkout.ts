@@ -44,6 +44,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const stripeKey = env.STRIPE_SECRET_KEY;
     const siteUrl = env.PUBLIC_SITE_URL || new URL(request.url).origin || 'https://instabid.live';
 
+    if (!stripeKey) {
+      return new Response(
+        JSON.stringify({ error: 'Live Stripe checkout is not configured. Add STRIPE_SECRET_KEY to enable production payments.' }),
+        { status: 503, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     if (stripeKey) {
       // Production Stripe Checkout Session
       const Stripe = (await import('stripe')).default;
@@ -93,12 +100,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Demo Mode fallback URL (simulates instant successful payment for local testing)
-    const demoSuccessUrl = `/?bid_success=true&handle=${cleanHandle}&amount=${parsedAmount.toFixed(2)}&cat=${cleanCategory}&desc=${encodeURIComponent(cleanDescription)}`;
-    return new Response(JSON.stringify({ url: demoSuccessUrl, demo: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: 'Live payment provider is not configured for this environment.' }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (err: any) {
     return new Response(
       JSON.stringify({ error: err.message || 'Payment initialization failed.' }),
