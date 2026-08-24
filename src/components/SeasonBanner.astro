@@ -38,9 +38,30 @@ const { seasonNumber = 24, totalBidsCount = 8 } = Astro.props;
         <div class="text-lg sm:text-xl md:text-2xl font-black text-pink-600" id="season-mins">42</div>
         <div class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase">Mins</div>
       </div>
+      <span class="text-slate-300 font-bold text-base sm:text-xl">:</span>
+      <div>
+        <div class="text-lg sm:text-xl md:text-2xl font-black text-pink-600 season-seconds" id="season-secs">00</div>
+        <div class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase">Secs</div>
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  .season-seconds.tick {
+    animation: seconds-tick 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes seconds-tick {
+    0% { opacity: 0.35; transform: translateY(-5px) scale(0.92); }
+    60% { opacity: 1; transform: translateY(1px) scale(1.06); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .season-seconds.tick { animation: none; }
+  }
+</style>
 
 <script is:inline>
   const getNextSeasonReset = () => {
@@ -84,14 +105,25 @@ const { seasonNumber = 24, totalBidsCount = 8 } = Astro.props;
     const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
     const hours = Math.floor((remaining / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((remaining / (1000 * 60)) % 60);
+    const seconds = Math.floor((remaining / 1000) % 60);
 
     const dayEl = document.getElementById('season-days');
     const hourEl = document.getElementById('season-hours');
     const minEl = document.getElementById('season-mins');
+    const secondEl = document.getElementById('season-secs');
 
     if (dayEl) dayEl.textContent = pad(days);
     if (hourEl) hourEl.textContent = pad(hours);
     if (minEl) minEl.textContent = pad(minutes);
+    if (secondEl) {
+      const nextSeconds = pad(seconds);
+      if (secondEl.textContent !== nextSeconds) {
+        secondEl.textContent = nextSeconds;
+        secondEl.classList.remove('tick');
+        void secondEl.offsetWidth;
+        secondEl.classList.add('tick');
+      }
+    }
   };
 
   updateSeasonTimer();

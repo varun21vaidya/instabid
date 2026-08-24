@@ -33,7 +33,10 @@ export const CATEGORIES: Category[] = [
   { id: 'cat-memes', slug: 'memes', name: 'Memes & Culture', icon: '😂', description: 'Viral meme pages, comedy accounts, & pop culture.' },
   { id: 'cat-business', slug: 'business', name: 'Business & Tech', icon: '🚀', description: 'Founders, investors, indie hackers, & tech gurus.' },
   { id: 'cat-music', slug: 'music', name: 'Music & Art', icon: '🎨', description: 'Producers, artists, designers, & DJs.' },
-  { id: 'cat-crypto', slug: 'crypto', name: 'Web3 & Crypto', icon: '💎', description: 'DeFi degens, NFT collectors, & Web3 founders.' },
+  { id: 'cat-food', slug: 'food', name: 'Food & Drink', icon: '🍜', description: 'Chefs, foodies, reviewers, & drink creators.' },
+  { id: 'cat-travel', slug: 'travel', name: 'Travel & Adventure', icon: '✈️', description: 'Travelers, explorers, guides, & stay creators.' },
+  { id: 'cat-beauty', slug: 'beauty', name: 'Beauty & Skincare', icon: '✨', description: 'Beauty artists, skincare experts, & product creators.' },
+  { id: 'cat-gaming', slug: 'gaming', name: 'Gaming & Streaming', icon: '🎮', description: 'Gamers, streamers, esports players, & creators.' },
 ];
 
 export const INITIAL_BIDS: BidItem[] = [
