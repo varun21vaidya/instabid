@@ -41,3 +41,59 @@ const { seasonNumber = 24, totalBidsCount = 8 } = Astro.props;
     </div>
   </div>
 </div>
+
+<script is:inline>
+  const getNextSeasonReset = () => {
+    const now = new Date();
+    const currentDay = now.getUTCDay(); // 0 = Sunday, 1 = Monday, ... 6 = Saturday
+
+    const sundayReset = new Date(Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      23,
+      59,
+      0,
+      0
+    ));
+
+    if (currentDay === 0 && now.getTime() < sundayReset.getTime()) {
+      return sundayReset;
+    }
+
+    const daysUntilSunday = (7 - currentDay) % 7;
+    const nextSunday = new Date(Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + (currentDay === 0 ? 7 : daysUntilSunday),
+      23,
+      59,
+      0,
+      0
+    ));
+
+    return nextSunday;
+  };
+
+  const pad = (value) => String(Math.max(0, value)).padStart(2, '0');
+
+  const updateSeasonTimer = () => {
+    const resetAt = getNextSeasonReset();
+    const remaining = Math.max(0, resetAt.getTime() - Date.now());
+
+    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remaining / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((remaining / (1000 * 60)) % 60);
+
+    const dayEl = document.getElementById('season-days');
+    const hourEl = document.getElementById('season-hours');
+    const minEl = document.getElementById('season-mins');
+
+    if (dayEl) dayEl.textContent = pad(days);
+    if (hourEl) hourEl.textContent = pad(hours);
+    if (minEl) minEl.textContent = pad(minutes);
+  };
+
+  updateSeasonTimer();
+  setInterval(updateSeasonTimer, 1000);
+</script>
